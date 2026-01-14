@@ -1,0 +1,23 @@
+{
+  "id": "compliance/annex-c1-process-flow",
+  "title": "Annex C-1 — System Process Flow",
+  "description": "BIR Annex C-1: Complete system process flow showing end-to-end transaction lifecycle with tenant isolation, validation, posting, and audit controls.",
+  "source": "@site/docs/compliance/annex-c1-process-flow.md",
+  "sourceDirName": "compliance",
+  "slug": "/compliance/annex-c1-process-flow",
+  "permalink": "/compliance/annex-c1-process-flow",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "🏠 Home",
+    "permalink": "/"
+  },
+  "next": {
+    "title": "Annex B — Functional Requirements Checklist",
+    "permalink": "/compliance/annex-b-functional-checklist"
+  }
+}

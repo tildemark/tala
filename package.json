@@ -1,0 +1,39 @@
+{
+  "name": "tala-monorepo",
+  "version": "1.0.0",
+  "description": "TALA - Tax and Ledger Assistant: Philippine Computerized Accounting System",
+  "license": "PROPRIETARY",
+  "private": true,
+  "packageManager": "pnpm@8.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "db:generate": "cd packages/database && prisma generate",
+    "db:migrate": "cd packages/database && prisma migrate dev",
+    "db:push": "cd packages/database && prisma db push",
+    "db:seed": "cd packages/database && prisma db seed",
+    "db:studio": "cd packages/database && prisma studio"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "turbo": "^1.10.0",
+    "typescript": "^5.0.0"
+  }
+}

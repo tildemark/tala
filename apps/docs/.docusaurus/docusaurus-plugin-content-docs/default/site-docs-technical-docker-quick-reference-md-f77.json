@@ -1,0 +1,23 @@
+{
+  "id": "technical/docker-quick-reference",
+  "title": "🐳 Docker Quick Reference",
+  "description": "One-page cheat sheet for TALA Docker operations.",
+  "source": "@site/docs/technical/docker-quick-reference.md",
+  "sourceDirName": "technical",
+  "slug": "/technical/docker-quick-reference",
+  "permalink": "/technical/docker-quick-reference",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "🐳 TALA Docker Deployment Guide",
+    "permalink": "/technical/docker-guide"
+  },
+  "next": {
+    "title": "✅ TALA Docker Implementation Complete",
+    "permalink": "/technical/docker-implementation-complete"
+  }
+}

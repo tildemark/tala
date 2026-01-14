@@ -1,0 +1,23 @@
+{
+  "id": "technical/architecture-overview",
+  "title": "TALA Architecture & Component Overview",
+  "description": "🏗️ System Architecture Diagram",
+  "source": "@site/docs/technical/architecture-overview.md",
+  "sourceDirName": "technical",
+  "slug": "/technical/architecture-overview",
+  "permalink": "/technical/architecture-overview",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "Disaster Recovery & Backup Procedures",
+    "permalink": "/compliance/disaster-recovery"
+  },
+  "next": {
+    "title": "API Documentation (Swagger)",
+    "permalink": "/technical/api-documentation"
+  }
+}

@@ -1,0 +1,596 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// MULTI-TENANCY & ORGANIZATION
+// ============================================================================
+
+model Tenant {
+  id            String    @id @default(cuid())
+  name          String
+  slug          String    @unique
+  industry      String    @default("service") // service, merchandising, professional
+  timezone      String    @default("Asia/Manila")
+  registrationNumber String? // SEC/DTI/BIR
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relations
+  users         User[]
+  roles         Role[]
+  permissions   Permission[]
+  chartOfAccounts ChartOfAccount[]
+  taxCodes      TaxCode[]
+  companies     Company[]
+  vendors       Vendor[]
+  journalEntries JournalEntry[]
+  journalDetails JournalDetail[]
+  auditLogs     AuditLog[]
+  generalLedgers GeneralLedger[]
+  bankAccounts  BankAccount[]
+  purchaseInvoices PurchaseInvoice[]
+  
+  @@index([slug])
+  @@index([deletedAt])
+}
+
+// ============================================================================
+// IDENTITY & ACCESS CONTROL (RBAC)
+// ============================================================================
+
+model User {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  email         String
+  passwordHash  String
+  firstName     String
+  lastName      String
+  photoUrl      String?
+  
+  roleId        String
+  role          Role      @relation(fields: [roleId], references: [id])
+  
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relations
+  auditLogs     AuditLog[]
+  refreshTokens RefreshToken[]
+  consentRecords ConsentRecord[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([roleId])
+  @@index([deletedAt])
+}
+
+model Role {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  name          String
+  description   String?
+  isDefault     Boolean   @default(false)
+  isSystem      Boolean   @default(false) // Prevents modification of Super Admin, Company Admin, etc.
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relations
+  users         User[]
+  permissions   Permission[]
+  rolePermissions RolePermission[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+  @@index([deletedAt])
+}
+
+model Permission {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  code          String    @unique // e.g., can_post_ledger, view_sensitive_data, can_export_bir
+  description   String?
+  category      String    @default("general") // ledger, reporting, admin, audit
+  isSystem      Boolean   @default(false)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  roles         Role[]
+  rolePermissions RolePermission[]
+
+  @@index([tenantId])
+  @@index([category])
+}
+
+model RolePermission {
+  id            String    @id @default(cuid())
+  roleId        String
+  role          Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  
+  permissionId  String
+  permission    Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  
+  grantedAt     DateTime  @default(now())
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+}
+
+model RefreshToken {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  token         String    @unique
+  expiresAt     DateTime
+  revokedAt     DateTime?
+  
+  createdAt     DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// ============================================================================
+// AUDIT & INTEGRITY (RR 9-2009 & TAMPER-EVIDENCE)
+// ============================================================================
+
+model AuditLog {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  
+  entityType    String    // JournalEntry, Invoice, Vendor, etc.
+  entityId      String
+  action        String    // Created, Viewed, Updated, Exported, Voided, Posted
+  
+  changesBefore String?   @db.Text // JSON stringified
+  changesAfter  String?   @db.Text // JSON stringified
+  description   String?
+  
+  // Cryptographic Audit Chain (RR 9-2009)
+  previousHash  String?   // SHA-256 of previous log entry's dataHash
+  dataHash      String    // SHA-256(previousHash + entityType + entityId + action + timestamp + userId)
+  hashVerified  Boolean   @default(false)
+  
+  ipAddress     String?
+  userAgent     String?
+  
+  createdAt     DateTime  @default(now())
+
+  // Relations
+  nextLog       AuditLog? @relation("AuditChain", fields: [id], references: [id])
+  parentLog     AuditLog? @relation("AuditChain")
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// ============================================================================
+// PRIVACY & DATA PROTECTION (DPA 2012)
+// ============================================================================
+
+model ConsentRecord {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  consentType   String    // terms_of_service, privacy_policy
+  version       String
+  accepted      Boolean
+  acceptedAt    DateTime  @default(now())
+  ipAddress     String?
+  userAgent     String?
+  
+  @@unique([userId, consentType, version])
+  @@index([userId])
+}
+
+// ============================================================================
+// PHILIPPINE BUSINESS ENTITIES
+// ============================================================================
+
+model Company {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  name          String
+  registeredName String?
+  tradeName     String?
+  
+  // Tax Information (Encrypted)
+  tinEncrypted  String?   // TIN: 000-000-000-000
+  businessType  String    @default("sole_proprietorship") // sole_proprietorship, partnership, corporation
+  industry      String    // From Tenant industry or custom
+  
+  registrationNumber String? // SEC/DTI/BIR
+  taxStatus     String    @default("non_vat") // vat, non_vat, exempt
+  
+  // Address
+  address       String
+  city          String
+  province      String
+  zipCode       String
+  
+  // Contact
+  contactPerson String?
+  contactEmail  String?
+  contactPhone  String?
+  
+  // Banking
+  bankName      String?
+  bankAccountNumberEncrypted String? // AES-256 encrypted
+  
+  // Operational
+  fiscalYearEnd String    @default("12-31") // MM-DD format
+  reportingCurrency String @default("PHP")
+  
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relations
+  vendors       Vendor[]
+  journalEntries JournalEntry[]
+  purchaseInvoices PurchaseInvoice[]
+
+  @@unique([tenantId, registrationNumber])
+  @@index([tenantId])
+  @@index([deletedAt])
+}
+
+model Vendor {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  companyId     String
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  name          String
+  vendorType    String    @default("supplier") // supplier, contractor, service_provider
+  
+  // Tax Information (Encrypted)
+  tinEncrypted  String?
+  taxStatus     String    @default("non_vat") // vat, non_vat, exempt
+  
+  address       String?
+  city          String?
+  province      String?
+  zipCode       String?
+  
+  contactPerson String?
+  contactEmail  String?
+  contactPhone  String?
+  
+  // Banking
+  bankName      String?
+  bankAccountNumberEncrypted String?
+  
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relations
+  purchaseInvoices PurchaseInvoice[]
+
+  @@unique([tenantId, tinEncrypted])
+  @@index([tenantId])
+  @@index([companyId])
+  @@index([deletedAt])
+}
+
+// ============================================================================
+// CHART OF ACCOUNTS & TAX CONFIGURATION
+// ============================================================================
+
+model ChartOfAccount {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  accountCode   String
+  accountName   String
+  accountType   String    // Asset, Liability, Equity, Revenue, Expense
+  subType       String?   // Current Asset, Fixed Asset, etc.
+  
+  debitBalance  Boolean   @default(true) // Default debit or credit balance
+  description   String?
+  
+  isActive      Boolean   @default(true)
+  isSystem      Boolean   @default(false) // Prevents deletion
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relations
+  journalDetails JournalDetail[]
+  generalLedgers GeneralLedger[]
+
+  @@unique([tenantId, accountCode])
+  @@index([tenantId])
+  @@index([accountType])
+  @@index([deletedAt])
+}
+
+model TaxCode {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  code          String    // VAT000, EWT001, etc.
+  description   String
+  taxType       String    // VAT, EWT, ATC, NonVAT
+  rate          Float     @default(0) // Percentage
+  
+  birFormCode   String?   // For Form 2307, SLS, SLP
+  isActive      Boolean   @default(true)
+  isSystem      Boolean   @default(false)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relations
+  journalDetails JournalDetail[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+  @@index([taxType])
+  @@index([deletedAt])
+}
+
+// ============================================================================
+// LEDGER & JOURNAL ENTRIES (DOUBLE-ENTRY BOOKKEEPING)
+// ============================================================================
+
+model JournalEntry {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  companyId     String
+  company       Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  journalNumber String
+  referenceNumber String? // Invoice, Check, etc.
+  description   String    @db.Text
+  
+  entryType     String    @default("general") // general, purchase, sales, adjusting, closing
+  status        String    @default("draft") // draft, posted, voided
+  
+  entryDate     DateTime
+  postingDate   DateTime?
+  
+  postedBy      String?   // User ID of who posted
+  approvedBy    String?   // User ID of who approved
+  voidedBy      String?   // User ID of who voided
+  
+  voidReason    String?
+  voidedAt      DateTime?
+  
+  // Double-Entry Validation
+  totalDebit    Decimal   @default(0) @db.Decimal(18, 2)
+  totalCredit   Decimal   @default(0) @db.Decimal(18, 2)
+  isBalanced    Boolean   @default(false)
+  
+  // Attachment
+  attachmentUrl String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  details       JournalDetail[]
+
+  @@unique([tenantId, journalNumber])
+  @@index([tenantId])
+  @@index([companyId])
+  @@index([status])
+  @@index([entryDate])
+  @@index([postingDate])
+}
+
+model JournalDetail {
+  id            String    @id @default(cuid())
+  journalEntryId String
+  journalEntry  JournalEntry @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  chartOfAccountId String
+  chartOfAccount ChartOfAccount @relation(fields: [chartOfAccountId], references: [id])
+  
+  taxCodeId     String?
+  taxCode       TaxCode?  @relation(fields: [taxCodeId], references: [id])
+  
+  description   String?
+  debit         Decimal   @default(0) @db.Decimal(18, 2)
+  credit        Decimal   @default(0) @db.Decimal(18, 2)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([journalEntryId])
+  @@index([tenantId])
+  @@index([chartOfAccountId])
+  @@index([taxCodeId])
+}
+
+model GeneralLedger {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  chartOfAccountId String
+  chartOfAccount ChartOfAccount @relation(fields: [chartOfAccountId], references: [id])
+  
+  journalNumber String
+  description   String?
+  
+  debit         Decimal   @default(0) @db.Decimal(18, 2)
+  credit        Decimal   @default(0) @db.Decimal(18, 2)
+  balance       Decimal   @default(0) @db.Decimal(18, 2)
+  
+  transactionDate DateTime
+  
+  createdAt     DateTime  @default(now())
+
+  @@index([tenantId])
+  @@index([chartOfAccountId])
+  @@index([transactionDate])
+}
+
+// ============================================================================
+// TRANSACTIONS (SALES & PURCHASES)
+// ============================================================================
+
+model SalesInvoice {
+  id            String    @id @default(cuid())
+  tenantId      String
+  companyId     String
+  
+  invoiceNumber String
+  invoiceDate   DateTime
+  dueDate       DateTime?
+  
+  customerName  String
+  customerTIN   String?
+  
+  subtotal      Decimal   @db.Decimal(18, 2)
+  vatAmount     Decimal   @db.Decimal(18, 2)
+  totalAmount   Decimal   @db.Decimal(18, 2)
+  
+  status        String    @default("draft") // draft, posted, paid, voided
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([tenantId, invoiceNumber])
+  @@index([tenantId])
+  @@index([companyId])
+  @@index([status])
+}
+
+model PurchaseInvoice {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  companyId     String
+  company       Company   @relation(fields: [companyId], references: [id])
+  
+  vendorId      String
+  vendor        Vendor    @relation(fields: [vendorId], references: [id])
+  
+  invoiceNumber String
+  vendorInvoiceNumber String?
+  invoiceDate   DateTime
+  dueDate       DateTime?
+  
+  subtotal      Decimal   @db.Decimal(18, 2)
+  ewtAmount     Decimal   @db.Decimal(18, 2) @default(0)
+  vatAmount     Decimal   @db.Decimal(18, 2) @default(0)
+  totalAmount   Decimal   @db.Decimal(18, 2)
+  
+  status        String    @default("draft") // draft, posted, paid, voided
+  voidReason    String?
+  voidedAt      DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([tenantId, invoiceNumber])
+  @@index([tenantId])
+  @@index([companyId])
+  @@index([vendorId])
+  @@index([status])
+}
+
+// ============================================================================
+// BANK & CASH MANAGEMENT
+// ============================================================================
+
+model BankAccount {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  bankName      String
+  accountNumberEncrypted String // AES-256
+  accountName   String
+  accountType   String    @default("checking") // checking, savings
+  currency      String    @default("PHP")
+  
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  @@unique([tenantId, accountNumberEncrypted])
+  @@index([tenantId])
+}
+
+// ============================================================================
+// FORM 2307 & BIR REPORTING
+// ============================================================================
+
+model Form2307 {
+  id            String    @id @default(cuid())
+  tenantId      String
+  year          Int
+  quarter       Int       @default(1)
+  
+  vendorTIN     String
+  vendorName    String
+  
+  grossAmount   Decimal   @db.Decimal(18, 2)
+  ewtAmount     Decimal   @db.Decimal(18, 2)
+  ewtRate       Float
+  
+  status        String    @default("draft") // draft, submitted
+  submittedAt   DateTime?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([tenantId, year, quarter, vendorTIN])
+}
+
+// ============================================================================
+// INDEXES FOR PERFORMANCE
+// ============================================================================

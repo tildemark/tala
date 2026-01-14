@@ -1,0 +1,23 @@
+{
+  "id": "caching/redis-caching-overview",
+  "title": "🎉 TALA Redis Caching Implementation - Overview",
+  "description": "What Was Implemented",
+  "source": "@site/docs/caching/redis-caching-overview.md",
+  "sourceDirName": "caching",
+  "slug": "/caching/redis-caching-overview",
+  "permalink": "/caching/redis-caching-overview",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "✅ TALA Project Completion Report",
+    "permalink": "/technical/project-completion"
+  },
+  "next": {
+    "title": "✨ TALA Redis Caching - Executive Summary",
+    "permalink": "/caching/redis-caching-executive-summary"
+  }
+}

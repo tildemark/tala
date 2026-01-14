@@ -1,0 +1,19 @@
+{
+  "name": "@tala/cache",
+  "version": "1.0.0",
+  "description": "TALA Cache - Redis-backed tenant-aware caching service",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "redis": "^4.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3"
+  }
+}

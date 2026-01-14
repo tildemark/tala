@@ -1,0 +1,19 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "TALA Database",
+      "Group": "TALA",
+      "Host": "tala-db",
+      "Port": 5432,
+      "MaintenanceDB": "tala_db",
+      "Username": "tala_user",
+      "SSLMode": "prefer",
+      "SSLCompression": 0,
+      "Timeout": 10,
+      "UseSSHTunnel": 0,
+      "TunnelPort": "22",
+      "TunnelAuthentication": 0,
+      "Comment": "TALA PostgreSQL Database Server"
+    }
+  }
+}

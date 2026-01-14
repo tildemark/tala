@@ -1,0 +1,23 @@
+{
+  "id": "caching/redis-environment-setup",
+  "title": "TALA Redis Caching - Environment Setup",
+  "description": "Environment Variables",
+  "source": "@site/docs/caching/redis-environment-setup.md",
+  "sourceDirName": "caching",
+  "slug": "/caching/redis-environment-setup",
+  "permalink": "/caching/redis-environment-setup",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "📚 TALA Redis Caching - Documentation Index",
+    "permalink": "/caching/redis-caching-documentation-index"
+  },
+  "next": {
+    "title": "TALA Redis Caching - Deployment Test Results",
+    "permalink": "/operations/redis-deployment-test-results"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "compliance/disaster-recovery",
+  "title": "Disaster Recovery & Backup Procedures",
+  "description": "Comprehensive disaster recovery strategy, RPO/RTO targets, backup cadence, and restoration procedures for TALA accounting system.",
+  "source": "@site/docs/compliance/disaster-recovery.md",
+  "sourceDirName": "compliance",
+  "slug": "/compliance/disaster-recovery",
+  "permalink": "/compliance/disaster-recovery",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "Annex B — Functional Requirements Checklist",
+    "permalink": "/compliance/annex-b-functional-checklist"
+  },
+  "next": {
+    "title": "TALA Architecture & Component Overview",
+    "permalink": "/technical/architecture-overview"
+  }
+}

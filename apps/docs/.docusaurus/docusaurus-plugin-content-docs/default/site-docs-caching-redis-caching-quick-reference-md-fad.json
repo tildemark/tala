@@ -1,0 +1,23 @@
+{
+  "id": "caching/redis-caching-quick-reference",
+  "title": "TALA Redis Caching - Quick Reference",
+  "description": "Installation & Setup",
+  "source": "@site/docs/caching/redis-caching-quick-reference.md",
+  "sourceDirName": "caching",
+  "slug": "/caching/redis-caching-quick-reference",
+  "permalink": "/caching/redis-caching-quick-reference",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "TALA Redis Caching Strategy - Financial Reports",
+    "permalink": "/caching/redis-caching-guide"
+  },
+  "next": {
+    "title": "TALA Redis Caching - Visual Reference Guide",
+    "permalink": "/caching/redis-caching-visual-reference"
+  }
+}

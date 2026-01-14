@@ -1,0 +1,22 @@
+{
+  "name": "@tala/database",
+  "version": "1.0.0",
+  "description": "TALA Database - Prisma Schema",
+  "private": true,
+  "scripts": {
+    "generate": "prisma generate",
+    "migrate": "prisma migrate dev",
+    "push": "prisma db push",
+    "seed": "ts-node src/seed.ts",
+    "studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.8.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.8.0",
+    "ts-node": "^10.9.2",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3"
+  }
+}

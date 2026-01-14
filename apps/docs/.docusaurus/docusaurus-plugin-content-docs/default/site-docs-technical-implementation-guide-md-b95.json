@@ -1,0 +1,23 @@
+{
+  "id": "technical/implementation-guide",
+  "title": "TALA Implementation & Architecture Guide",
+  "description": "Principal Software Architect's Specifications",
+  "source": "@site/docs/technical/implementation-guide.md",
+  "sourceDirName": "technical",
+  "slug": "/technical/implementation-guide",
+  "permalink": "/technical/implementation-guide",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "TALA Setup Troubleshooting & Quick Start Guide",
+    "permalink": "/technical/setup-guide"
+  },
+  "next": {
+    "title": "TALA - Project Delivery Summary",
+    "permalink": "/technical/delivery-summary"
+  }
+}

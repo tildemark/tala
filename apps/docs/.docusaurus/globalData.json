@@ -1,0 +1,168 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/",
+          "mainDocId": "index",
+          "docs": [
+            {
+              "id": "caching/redis-caching-documentation-index",
+              "path": "/caching/redis-caching-documentation-index",
+              "sidebar": "docs"
+            },
+            {
+              "id": "caching/redis-caching-examples",
+              "path": "/caching/redis-caching-examples",
+              "sidebar": "docs"
+            },
+            {
+              "id": "caching/redis-caching-executive-summary",
+              "path": "/caching/redis-caching-executive-summary",
+              "sidebar": "docs"
+            },
+            {
+              "id": "caching/redis-caching-guide",
+              "path": "/caching/redis-caching-guide",
+              "sidebar": "docs"
+            },
+            {
+              "id": "caching/redis-caching-implementation-complete",
+              "path": "/caching/redis-caching-implementation-complete",
+              "sidebar": "docs"
+            },
+            {
+              "id": "caching/redis-caching-overview",
+              "path": "/caching/redis-caching-overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "caching/redis-caching-quick-reference",
+              "path": "/caching/redis-caching-quick-reference",
+              "sidebar": "docs"
+            },
+            {
+              "id": "caching/redis-caching-visual-reference",
+              "path": "/caching/redis-caching-visual-reference",
+              "sidebar": "docs"
+            },
+            {
+              "id": "caching/redis-environment-setup",
+              "path": "/caching/redis-environment-setup",
+              "sidebar": "docs"
+            },
+            {
+              "id": "compliance/annex-b-functional-checklist",
+              "path": "/compliance/annex-b-functional-checklist",
+              "sidebar": "docs"
+            },
+            {
+              "id": "compliance/annex-c1-process-flow",
+              "path": "/compliance/annex-c1-process-flow",
+              "sidebar": "docs"
+            },
+            {
+              "id": "compliance/disaster-recovery",
+              "path": "/compliance/disaster-recovery",
+              "sidebar": "docs"
+            },
+            {
+              "id": "index",
+              "path": "/",
+              "sidebar": "docs"
+            },
+            {
+              "id": "operations/redis-deployment-test-results",
+              "path": "/operations/redis-deployment-test-results",
+              "sidebar": "docs"
+            },
+            {
+              "id": "operations/test-commands",
+              "path": "/operations/test-commands",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/api-documentation",
+              "path": "/technical/api-documentation",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/architecture-overview",
+              "path": "/technical/architecture-overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/delivery-summary",
+              "path": "/technical/delivery-summary",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/docker-guide",
+              "path": "/technical/docker-guide",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/docker-implementation-complete",
+              "path": "/technical/docker-implementation-complete",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/docker-quick-reference",
+              "path": "/technical/docker-quick-reference",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/erd-tenant-isolation",
+              "path": "/technical/erd-tenant-isolation",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/file-manifest",
+              "path": "/technical/file-manifest",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/implementation-guide",
+              "path": "/technical/implementation-guide",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/installation-complete",
+              "path": "/technical/installation-complete",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/project-completion",
+              "path": "/technical/project-completion",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/setup-guide",
+              "path": "/technical/setup-guide",
+              "sidebar": "docs"
+            },
+            {
+              "id": "technical/transaction-lifecycle",
+              "path": "/technical/transaction-lifecycle",
+              "sidebar": "docs"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docs": {
+              "link": {
+                "path": "/",
+                "label": "🏠 Home"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

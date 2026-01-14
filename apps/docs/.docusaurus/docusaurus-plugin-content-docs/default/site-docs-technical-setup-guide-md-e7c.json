@@ -1,0 +1,23 @@
+{
+  "id": "technical/setup-guide",
+  "title": "TALA Setup Troubleshooting & Quick Start Guide",
+  "description": "Status: Project structure created, ready for local development setup (API/Web/Docs)",
+  "source": "@site/docs/technical/setup-guide.md",
+  "sourceDirName": "technical",
+  "slug": "/technical/setup-guide",
+  "permalink": "/technical/setup-guide",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "Double-Entry Transaction Lifecycle",
+    "permalink": "/technical/transaction-lifecycle"
+  },
+  "next": {
+    "title": "TALA Implementation & Architecture Guide",
+    "permalink": "/technical/implementation-guide"
+  }
+}

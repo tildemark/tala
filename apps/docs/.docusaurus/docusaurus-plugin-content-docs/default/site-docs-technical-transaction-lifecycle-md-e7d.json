@@ -1,0 +1,23 @@
+{
+  "id": "technical/transaction-lifecycle",
+  "title": "Double-Entry Transaction Lifecycle",
+  "description": "Complete lifecycle of a financial transaction from voucher creation through posting to the general ledger, demonstrating double-entry bookkeeping principles and system controls.",
+  "source": "@site/docs/technical/transaction-lifecycle.md",
+  "sourceDirName": "technical",
+  "slug": "/technical/transaction-lifecycle",
+  "permalink": "/technical/transaction-lifecycle",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "Entity-Relationship Diagram (ERD) — Tenant Isolation",
+    "permalink": "/technical/erd-tenant-isolation"
+  },
+  "next": {
+    "title": "TALA Setup Troubleshooting & Quick Start Guide",
+    "permalink": "/technical/setup-guide"
+  }
+}

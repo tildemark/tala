@@ -1,0 +1,23 @@
+{
+  "id": "compliance/annex-b-functional-checklist",
+  "title": "Annex B — Functional Requirements Checklist",
+  "description": "BIR Annex B: Comprehensive functional requirements tracking for Philippine computerized accounting system compliance.",
+  "source": "@site/docs/compliance/annex-b-functional-checklist.md",
+  "sourceDirName": "compliance",
+  "slug": "/compliance/annex-b-functional-checklist",
+  "permalink": "/compliance/annex-b-functional-checklist",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "frontMatter": {},
+  "sidebar": "docs",
+  "previous": {
+    "title": "Annex C-1 — System Process Flow",
+    "permalink": "/compliance/annex-c1-process-flow"
+  },
+  "next": {
+    "title": "Disaster Recovery & Backup Procedures",
+    "permalink": "/compliance/disaster-recovery"
+  }
+}

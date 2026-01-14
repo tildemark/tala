@@ -1,0 +1,18 @@
+{
+  "name": "@tala/shared",
+  "version": "1.0.0",
+  "description": "TALA Shared - Shared Utilities",
+  "private": true,
+  "main": "src/security.ts",
+  "scripts": {
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3"
+  }
+}
