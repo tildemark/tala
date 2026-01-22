@@ -14,6 +14,7 @@
       "@tala/database": ["./packages/database/src"],
       "@tala/audit": ["./packages/audit/src"],
       "@tala/auth": ["./packages/auth/src"],
+      "@tala/cache": ["./packages/cache/src"],
       "@tala/shared": ["./packages/shared/src"]
     },
     "typeRoots": ["./node_modules/@types"],

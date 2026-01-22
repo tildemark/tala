@@ -81,6 +81,36 @@ export class CacheKeyBuilder {
   }
 
   /**
+   * Build cache key for Income Statement report
+   */
+  static buildIncomeStatementKey(
+    tenantId: string,
+    period: string
+  ): string {
+    return this.buildReportKey(tenantId, 'income_statement', period);
+  }
+
+  /**
+   * Build cache key for Balance Sheet report
+   */
+  static buildBalanceSheetKey(
+    tenantId: string,
+    period: string
+  ): string {
+    return this.buildReportKey(tenantId, 'balance_sheet', period);
+  }
+
+  /**
+   * Build cache key for Cash Flow Statement report
+   */
+  static buildCashFlowStatementKey(
+    tenantId: string,
+    period: string
+  ): string {
+    return this.buildReportKey(tenantId, 'cash_flow_statement', period);
+  }
+
+  /**
    * Build pattern for invalidating all reports for a tenant
    * @param tenantId - Tenant identifier
    * @returns Pattern for KEYS command
@@ -116,8 +146,9 @@ export class CacheService {
       return; // Already connected
     }
 
-    if (this.isConnecting) {
-      return this.connectionPromise; // Wait for ongoing connection
+    if (this.isConnecting && this.connectionPromise) {
+      await this.connectionPromise; // Wait for ongoing connection
+      return;
     }
 
     this.isConnecting = true;
@@ -403,6 +434,99 @@ export class ReportCacheManager {
    */
   static async invalidateGeneralLedger(tenantId: string): Promise<void> {
     await CacheService.invalidateTenantReport(tenantId, 'general_ledger');
+  }
+
+  /**
+   * Cache income statement report
+   */
+  static async cacheIncomeStatement(
+    tenantId: string,
+    period: string,
+    data: any,
+    ttlSeconds: number = 86400
+  ): Promise<void> {
+    const key = CacheKeyBuilder.buildIncomeStatementKey(tenantId, period);
+    await CacheService.set(key, data, ttlSeconds);
+  }
+
+  /**
+   * Get cached income statement report
+   */
+  static async getIncomeStatement(
+    tenantId: string,
+    period: string
+  ): Promise<any | null> {
+    const key = CacheKeyBuilder.buildIncomeStatementKey(tenantId, period);
+    return await CacheService.get(key);
+  }
+
+  /**
+   * Cache balance sheet report
+   */
+  static async cacheBalanceSheet(
+    tenantId: string,
+    period: string,
+    data: any,
+    ttlSeconds: number = 86400
+  ): Promise<void> {
+    const key = CacheKeyBuilder.buildBalanceSheetKey(tenantId, period);
+    await CacheService.set(key, data, ttlSeconds);
+  }
+
+  /**
+   * Get cached balance sheet report
+   */
+  static async getBalanceSheet(
+    tenantId: string,
+    period: string
+  ): Promise<any | null> {
+    const key = CacheKeyBuilder.buildBalanceSheetKey(tenantId, period);
+    return await CacheService.get(key);
+  }
+
+  /**
+   * Cache cash flow statement report
+   */
+  static async cacheCashFlowStatement(
+    tenantId: string,
+    period: string,
+    data: any,
+    ttlSeconds: number = 86400
+  ): Promise<void> {
+    const key = CacheKeyBuilder.buildCashFlowStatementKey(tenantId, period);
+    await CacheService.set(key, data, ttlSeconds);
+  }
+
+  /**
+   * Get cached cash flow statement report
+   */
+  static async getCashFlowStatement(
+    tenantId: string,
+    period: string
+  ): Promise<any | null> {
+    const key = CacheKeyBuilder.buildCashFlowStatementKey(tenantId, period);
+    return await CacheService.get(key);
+  }
+
+  /**
+   * Invalidate income statement cache for a tenant
+   */
+  static async invalidateIncomeStatement(tenantId: string): Promise<void> {
+    await CacheService.invalidateTenantReport(tenantId, 'income_statement');
+  }
+
+  /**
+   * Invalidate balance sheet cache for a tenant
+   */
+  static async invalidateBalanceSheet(tenantId: string): Promise<void> {
+    await CacheService.invalidateTenantReport(tenantId, 'balance_sheet');
+  }
+
+  /**
+   * Invalidate cash flow statement cache for a tenant
+   */
+  static async invalidateCashFlowStatement(tenantId: string): Promise<void> {
+    await CacheService.invalidateTenantReport(tenantId, 'cash_flow_statement');
   }
 }
 

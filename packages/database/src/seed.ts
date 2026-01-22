@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { seedServiceFirm } from './seed.service-firm';
 
 const prisma = new PrismaClient();
 
@@ -632,6 +633,9 @@ async function main() {
     await seedDefaultRoles(tenant.id);
     await seedChartOfAccounts(tenant.id);
     await seedTaxCodes(tenant.id);
+
+    // Seed service firm with full 2025 data
+    await seedServiceFirm();
 
     const companyAdminRole = await prisma.role.findFirst({
       where: { tenantId: tenant.id, name: 'Company Admin' },

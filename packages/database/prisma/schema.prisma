@@ -30,6 +30,7 @@ model Tenant {
   taxCodes      TaxCode[]
   companies     Company[]
   vendors       Vendor[]
+  customers     Customer[] @relation("TenantCustomers")
   journalEntries JournalEntry[]
   journalDetails JournalDetail[]
   auditLogs     AuditLog[]
@@ -312,6 +313,48 @@ model Vendor {
   @@index([deletedAt])
 }
 
+model Customer {
+  id            String    @id @default(cuid())
+  tenantId      String
+  tenant        Tenant    @relation("TenantCustomers", references: [id], onDelete: Cascade)
+  
+  name          String
+  customerType  String    @default("individual") // individual, corporate, ngo
+  
+  // Tax Information (Encrypted)
+  tinEncrypted  String?
+  taxStatus     String    @default("non_vat") // vat, non_vat, exempt
+  
+  address       String?
+  city          String?
+  province      String?
+  zipCode       String?
+  
+  contactPerson String?
+  contactEmail  String?
+  contactPhone  String?
+  
+  // Credit Terms
+  creditLimit   Decimal   @default(0)
+  creditTerm    Int       @default(30) // Days
+  
+  // Banking
+  bankName      String?
+  bankAccountNumberEncrypted String?
+  
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relations
+  salesInvoices SalesInvoice[]
+
+  @@unique([tenantId, tinEncrypted])
+  @@index([tenantId])
+  @@index([deletedAt])
+}
+
 // ============================================================================
 // CHART OF ACCOUNTS & TAX CONFIGURATION
 // ============================================================================
@@ -483,6 +526,8 @@ model SalesInvoice {
   id            String    @id @default(cuid())
   tenantId      String
   companyId     String
+  customerId    String?
+  customer      Customer? @relation(fields: [customerId], references: [id])
   
   invoiceNumber String
   invoiceDate   DateTime
@@ -503,6 +548,7 @@ model SalesInvoice {
   @@unique([tenantId, invoiceNumber])
   @@index([tenantId])
   @@index([companyId])
+  @@index([customerId])
   @@index([status])
 }
 

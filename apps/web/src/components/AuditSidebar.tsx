@@ -59,7 +59,7 @@ const AuditSidebar: React.FC<AuditSidebarProps> = ({
     setError(null);
     try {
       const response = await fetch(
-        `/api/audit-logs?entityType=${entityType}&entityId=${entityId}`,
+        `http://localhost:3001/api/audit-logs?entityType=${entityType}&entityId=${entityId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
