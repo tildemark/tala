@@ -9,9 +9,8 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 interface ChartOfAccount {
@@ -98,7 +97,7 @@ export default function GeneralLedgerPage() {
       const response = await fetch(
         `http://localhost:3001/api/general-ledger/${selectedAccountId}?${params.toString()}`
       );
-
+      
       if (response.ok) {
         const result = await response.json();
         const ledgerEntries = result.data.entries || [];
@@ -142,10 +141,11 @@ export default function GeneralLedgerPage() {
     })),
   ];
 
-  const handleAccountChange = (value: string) => {
+  const handleAccountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newAccountId = e.target.value;
     // Only update if a valid account is selected (not empty)
-    if (value) {
-      setSelectedAccountId(value);
+    if (newAccountId) {
+      setSelectedAccountId(newAccountId);
     }
     // If empty, keep the previous ledgerData displayed
   };
@@ -181,40 +181,24 @@ export default function GeneralLedgerPage() {
       <Card className="border-slate-200 bg-white shadow-sm">
         <CardContent className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="space-y-2">
-              <Label>Account</Label>
-              <Select
-                value={selectedAccountId}
-                onValueChange={handleAccountChange}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Account" />
-                </SelectTrigger>
-                <SelectContent>
-                  {accountOptions.map((opt) => (
-                    <SelectItem key={opt.value} value={opt.value || 'none'}>
-                      {opt.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Start Date</Label>
-              <Input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>End Date</Label>
-              <Input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </div>
+            <Select
+              label="Account"
+              value={selectedAccountId}
+              onChange={handleAccountChange}
+              options={accountOptions}
+            />
+            <Input
+              label="Start Date"
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+            <Input
+              label="End Date"
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
             <div className="flex items-end">
               <Button
                 variant="outline"

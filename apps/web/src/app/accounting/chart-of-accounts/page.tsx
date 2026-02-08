@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select } from '@/components/ui/select';
 import { formatCurrency } from '@/lib/utils';
 
 interface ChartOfAccount {
@@ -23,14 +23,6 @@ interface ChartOfAccount {
   isActive: boolean;
   createdAt: string;
 }
-
-// Helper for form fields
-const FormField = ({ label, children }: { label: string; children: React.ReactNode }) => (
-  <div className="space-y-2">
-    <div className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">{label}</div>
-    {children}
-  </div>
-);
 
 export default function ChartOfAccountsPage() {
   const [accounts, setAccounts] = useState<ChartOfAccount[]>([]);
@@ -76,7 +68,7 @@ export default function ChartOfAccountsPage() {
     e.preventDefault();
     try {
       const method = editingId ? 'PUT' : 'POST';
-      const url = editingId
+      const url = editingId 
         ? `http://localhost:3001/api/chart-of-accounts/${editingId}`
         : 'http://localhost:3001/api/chart-of-accounts';
 
@@ -154,7 +146,7 @@ export default function ChartOfAccountsPage() {
     const matchesSearch =
       account.accountCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
       account.accountName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesType = !filterType || filterType === 'all' || account.accountType.toLowerCase() === filterType.toLowerCase();
+    const matchesType = !filterType || account.accountType.toLowerCase() === filterType.toLowerCase();
     return matchesSearch && matchesType;
   });
 
@@ -193,53 +185,37 @@ export default function ChartOfAccountsPage() {
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField label="Account Code">
-                  <Input
-                    value={formData.accountCode}
-                    onChange={(e) => setFormData({ ...formData, accountCode: e.target.value })}
-                    placeholder="e.g., 1000"
-                    required
-                  />
-                </FormField>
-                <FormField label="Account Name">
-                  <Input
-                    value={formData.accountName}
-                    onChange={(e) => setFormData({ ...formData, accountName: e.target.value })}
-                    placeholder="e.g., Cash in Bank"
-                    required
-                  />
-                </FormField>
-                <FormField label="Account Type">
-                  <Select
-                    value={formData.accountType}
-                    onValueChange={(value) => setFormData({ ...formData, accountType: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {accountTypes.map((type) => (
-                        <SelectItem key={type.value} value={type.value}>
-                          {type.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormField>
-                <FormField label="Normal Balance">
-                  <Select
-                    value={formData.debitBalance ? 'debit' : 'credit'}
-                    onValueChange={(value) => setFormData({ ...formData, debitBalance: value === 'debit' })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select balance" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="debit">Debit</SelectItem>
-                      <SelectItem value="credit">Credit</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormField>
+                <Input
+                  label="Account Code"
+                  value={formData.accountCode}
+                  onChange={(e) => setFormData({ ...formData, accountCode: e.target.value })}
+                  placeholder="e.g., 1000"
+                  required
+                />
+                <Input
+                  label="Account Name"
+                  value={formData.accountName}
+                  onChange={(e) => setFormData({ ...formData, accountName: e.target.value })}
+                  placeholder="e.g., Cash in Bank"
+                  required
+                />
+                <Select
+                  label="Account Type"
+                  value={formData.accountType}
+                  onChange={(e) => setFormData({ ...formData, accountType: e.target.value })}
+                  options={accountTypes}
+                  required
+                />
+                <Select
+                  label="Normal Balance"
+                  value={formData.debitBalance ? 'debit' : 'credit'}
+                  onChange={(e) => setFormData({ ...formData, debitBalance: e.target.value === 'debit' })}
+                  options={[
+                    { value: 'debit', label: 'Debit' },
+                    { value: 'credit', label: 'Credit' },
+                  ]}
+                  required
+                />
               </div>
               <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                 <Button type="button" variant="outline" onClick={() => handleCancel()}>
@@ -267,20 +243,12 @@ export default function ChartOfAccountsPage() {
             </div>
             <Select
               value={filterType}
-              onValueChange={(value) => setFilterType(value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="All Types" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                {accountTypes.map((type) => (
-                  <SelectItem key={type.value} value={type.value}>
-                    {type.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              onChange={(e) => setFilterType(e.target.value)}
+              options={[
+                { value: '', label: 'All Types' },
+                ...accountTypes,
+              ]}
+            />
           </div>
         </CardContent>
       </Card>
@@ -317,7 +285,7 @@ export default function ChartOfAccountsPage() {
                     Revenue: 'bg-green-100 text-green-800 border-l-4 border-green-500',
                     Expense: 'bg-orange-100 text-orange-800 border-l-4 border-orange-500',
                   };
-
+                  
                   const typeColor = typeColors[account.accountType as keyof typeof typeColors] || 'bg-slate-100 text-slate-800';
 
                   return (
@@ -330,10 +298,11 @@ export default function ChartOfAccountsPage() {
                         </span>
                       </TableCell>
                       <TableCell>
-                        <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${account.debitBalance
-                          ? 'bg-slate-200 text-slate-700'
-                          : 'bg-slate-200 text-slate-700'
-                          }`}>
+                        <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
+                          account.debitBalance 
+                            ? 'bg-slate-200 text-slate-700' 
+                            : 'bg-slate-200 text-slate-700'
+                        }`}>
                           {account.debitBalance ? '↓ Debit' : '↑ Credit'}
                         </span>
                       </TableCell>
@@ -342,10 +311,11 @@ export default function ChartOfAccountsPage() {
                       </TableCell>
                       <TableCell>
                         <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${account.isActive
-                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                            : 'bg-red-100 text-red-800 border border-red-300'
-                            }`}
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                            account.isActive
+                              ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                              : 'bg-red-100 text-red-800 border border-red-300'
+                          }`}
                         >
                           {account.isActive ? '✓ Active' : '✕ Inactive'}
                         </span>

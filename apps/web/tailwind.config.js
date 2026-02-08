@@ -6,11 +6,58 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-
+  safelist: [
+    // Metronic CSS variable classes
+    'bg-background',
+    'text-foreground',
+    'bg-card',
+    'text-card-foreground',
+    'bg-popover',
+    'text-popover-foreground',
+    'bg-primary',
+    'text-primary-foreground',
+    'bg-secondary',
+    'text-secondary-foreground',
+    'bg-muted',
+    'text-muted-foreground',
+    'bg-accent',
+    'text-accent-foreground',
+    'bg-destructive',
+    'text-destructive-foreground',
+    'border-border',
+    'border-input',
+    'bg-background/70',
+    'bg-background/90',
+    'bg-background/95',
+  ],
   theme: {
     extend: {
       colors: {
-
+        // Metronic CSS variables (these are defined in styles/globals.css)
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        card: 'var(--card)',
+        'card-foreground': 'var(--card-foreground)',
+        popover: 'var(--popover)',
+        'popover-foreground': 'var(--popover-foreground)',
+        primary: 'var(--primary)',
+        'primary-foreground': 'var(--primary-foreground)',
+        secondary: 'var(--secondary)',
+        'secondary-foreground': 'var(--secondary-foreground)',
+        muted: 'var(--muted)',
+        'muted-foreground': 'var(--muted-foreground)',
+        accent: 'var(--accent)',
+        'accent-foreground': 'var(--accent-foreground)',
+        destructive: 'var(--destructive)',
+        'destructive-foreground': 'var(--destructive-foreground)',
+        'chart-1': 'var(--chart-1)',
+        'chart-2': 'var(--chart-2)',
+        'chart-3': 'var(--chart-3)',
+        'chart-4': 'var(--chart-4)',
+        border: 'var(--border)',
+        input: 'var(--input)',
+        ring: 'var(--ring)',
+        // TALA specific colors
         tala: {
           primary: {
             50: '#f0f4f9',

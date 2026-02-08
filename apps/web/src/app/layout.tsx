@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import './globals.css';
-import { Layout1 } from '@/components/layouts/layout-1';
+import { MainLayout } from '@/components/layout/MainLayout';
 import { ThemeProvider } from 'next-themes';
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <Layout1>{children}</Layout1>
+          <MainLayout>{children}</MainLayout>
         </ThemeProvider>
       </body>
     </html>

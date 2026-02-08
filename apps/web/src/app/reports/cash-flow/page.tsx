@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select } from '@/components/ui/select';
 
 interface CashFlowData {
   success: boolean;
@@ -164,17 +164,12 @@ export default function CashFlowPage() {
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Year
               </label>
-              <Select value={year} onValueChange={setYear}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Year" />
-                </SelectTrigger>
-                <SelectContent>
-                  {generateYears().map((y) => (
-                    <SelectItem key={y} value={y}>
-                      {y}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
+              <Select value={year} onChange={(e) => setYear(e.target.value)}>
+                {generateYears().map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
               </Select>
             </div>
 
@@ -183,17 +178,12 @@ export default function CashFlowPage() {
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Month
                 </label>
-                <Select value={month} onValueChange={setMonth}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Month" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {months.map((m) => (
-                      <SelectItem key={m.value} value={m.value}>
-                        {m.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+                <Select value={month} onChange={(e) => setMonth(e.target.value)}>
+                  {months.map((m) => (
+                    <option key={m.value} value={m.value}>
+                      {m.label}
+                    </option>
+                  ))}
                 </Select>
               </div>
             )}
@@ -210,7 +200,7 @@ export default function CashFlowPage() {
                 Skip Cache
               </label>
             </div>
-            <Button onClick={fetchReport} disabled={loading}>
+            <Button onClick={fetchReport} isLoading={loading}>
               Refresh
             </Button>
             {reportData && (

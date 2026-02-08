@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select } from '@/components/ui/select';
 
 type SettingsTab = 'company' | 'financial' | 'documents' | 'security';
 
@@ -143,10 +143,10 @@ export default function SettingsPage() {
         documentSequences: documentSequences,
         security: securitySettings,
       };
-
+      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 800));
-
+      
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err) {
@@ -197,37 +197,41 @@ export default function SettingsPage() {
         <nav className="flex space-x-8" aria-label="Tabs">
           <button
             onClick={() => setActiveTab('company')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'company'
-              ? 'border-indigo-500 text-indigo-600'
-              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-              }`}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'company'
+                ? 'border-indigo-500 text-indigo-600'
+                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+            }`}
           >
             🏢 Company
           </button>
           <button
             onClick={() => setActiveTab('financial')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'financial'
-              ? 'border-indigo-500 text-indigo-600'
-              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-              }`}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'financial'
+                ? 'border-indigo-500 text-indigo-600'
+                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+            }`}
           >
             💰 Financial
           </button>
           <button
             onClick={() => setActiveTab('documents')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'documents'
-              ? 'border-indigo-500 text-indigo-600'
-              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-              }`}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'documents'
+                ? 'border-indigo-500 text-indigo-600'
+                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+            }`}
           >
             📄 Document Sequences
           </button>
           <button
             onClick={() => setActiveTab('security')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'security'
-              ? 'border-indigo-500 text-indigo-600'
-              : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-              }`}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'security'
+                ? 'border-indigo-500 text-indigo-600'
+                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+            }`}
           >
             🔒 Security
           </button>
@@ -240,7 +244,7 @@ export default function SettingsPage() {
           <div className="space-y-6">
             <div>
               <h2 className="text-lg font-semibold text-slate-900 mb-6">Company Information</h2>
-
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -378,8 +382,8 @@ export default function SettingsPage() {
             </div>
 
             <div className="flex justify-end pt-6 border-t border-slate-200">
-              <Button onClick={saveSettings} disabled={loading}>
-                {loading ? 'Saving...' : 'Save Company Settings'}
+              <Button onClick={saveSettings} isLoading={loading}>
+                Save Company Settings
               </Button>
             </div>
           </div>
@@ -392,7 +396,7 @@ export default function SettingsPage() {
           <div className="space-y-6">
             <div>
               <h2 className="text-lg font-semibold text-slate-900 mb-6">Financial Configuration</h2>
-
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -400,16 +404,11 @@ export default function SettingsPage() {
                   </label>
                   <Select
                     value={financialSettings.currency}
-                    onValueChange={(val) => handleFinancialChange('currency', val)}
+                    onChange={(e) => handleFinancialChange('currency', e.target.value)}
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="PHP">Philippine Peso (PHP)</SelectItem>
-                      <SelectItem value="USD">US Dollar (USD)</SelectItem>
-                      <SelectItem value="EUR">Euro (EUR)</SelectItem>
-                    </SelectContent>
+                    <option value="PHP">Philippine Peso (PHP)</option>
+                    <option value="USD">US Dollar (USD)</option>
+                    <option value="EUR">Euro (EUR)</option>
                   </Select>
                 </div>
 
@@ -490,15 +489,15 @@ export default function SettingsPage() {
 
               <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <p className="text-sm text-blue-800">
-                  <strong>ℹ️ Note:</strong> These settings are used for BIR compliance and financial reporting.
+                  <strong>ℹ️ Note:</strong> These settings are used for BIR compliance and financial reporting. 
                   Please ensure values are accurate and compliant with Philippine regulations.
                 </p>
               </div>
             </div>
 
             <div className="flex justify-end pt-6 border-t border-slate-200">
-              <Button onClick={saveSettings} disabled={loading}>
-                {loading ? 'Saving...' : 'Save Financial Settings'}
+              <Button onClick={saveSettings} isLoading={loading}>
+                Save Financial Settings
               </Button>
             </div>
           </div>
@@ -512,7 +511,7 @@ export default function SettingsPage() {
             <div>
               <h2 className="text-lg font-semibold text-slate-900 mb-6">Document Sequence Configuration</h2>
               <p className="text-sm text-slate-600 mb-6">Configure starting numbers for document sequences. Use format: PREFIX-YYYY-NNNN</p>
-
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -565,15 +564,15 @@ export default function SettingsPage() {
 
               <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <p className="text-sm text-blue-800">
-                  <strong>ℹ️ Note:</strong> Document sequences are used to generate unique identifiers for all financial documents.
+                  <strong>ℹ️ Note:</strong> Document sequences are used to generate unique identifiers for all financial documents. 
                   All currency values will be displayed with exactly 2 decimal places.
                 </p>
               </div>
             </div>
 
             <div className="flex justify-end pt-6 border-t border-slate-200">
-              <Button onClick={saveSettings} disabled={loading}>
-                {loading ? 'Saving...' : 'Save Document Sequences'}
+              <Button onClick={saveSettings} isLoading={loading}>
+                Save Document Sequences
               </Button>
             </div>
           </div>
@@ -586,7 +585,7 @@ export default function SettingsPage() {
           <div className="space-y-6">
             <div>
               <h2 className="text-lg font-semibold text-slate-900 mb-6">Security Settings</h2>
-
+              
               <div className="space-y-6">
                 {/* Two-Factor Authentication */}
                 <div className="border-b border-slate-200 pb-6">
@@ -599,10 +598,11 @@ export default function SettingsPage() {
                     </div>
                     <button
                       onClick={() => handleSecurityChange('twoFactorEnabled', !securitySettings.twoFactorEnabled)}
-                      className={`px-4 py-2 rounded-lg font-medium text-sm ${securitySettings.twoFactorEnabled
-                        ? 'bg-red-50 text-red-700 hover:bg-red-100'
-                        : 'bg-green-50 text-green-700 hover:bg-green-100'
-                        }`}
+                      className={`px-4 py-2 rounded-lg font-medium text-sm ${
+                        securitySettings.twoFactorEnabled
+                          ? 'bg-red-50 text-red-700 hover:bg-red-100'
+                          : 'bg-green-50 text-green-700 hover:bg-green-100'
+                      }`}
                     >
                       {securitySettings.twoFactorEnabled ? 'Disable' : 'Enable'}
                     </button>
@@ -684,7 +684,7 @@ export default function SettingsPage() {
                 {/* Security Notice */}
                 <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <p className="text-sm text-yellow-800">
-                    <strong>⚠️ Warning:</strong> Keep your API key secure and never share it publicly.
+                    <strong>⚠️ Warning:</strong> Keep your API key secure and never share it publicly. 
                     If compromised, generate a new key immediately.
                   </p>
                 </div>
@@ -692,8 +692,8 @@ export default function SettingsPage() {
             </div>
 
             <div className="flex justify-end pt-6 border-t border-slate-200">
-              <Button onClick={saveSettings} disabled={loading}>
-                {loading ? 'Saving...' : 'Save Security Settings'}
+              <Button onClick={saveSettings} isLoading={loading}>
+                Save Security Settings
               </Button>
             </div>
           </div>

@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
 
 type ReportType = 'trial-balance' | 'income-statement' | 'balance-sheet' | 'cash-flow';
 
@@ -46,10 +47,10 @@ export default function ReportsPage() {
         reportType === 'trial-balance'
           ? `/api/reports/trial-balance?period=${period}&skipCache=${skipCache}`
           : reportType === 'income-statement'
-            ? `/api/reports/income-statement?period=${period}&skipCache=${skipCache}`
-            : reportType === 'balance-sheet'
-              ? `/api/reports/balance-sheet?period=${period}&skipCache=${skipCache}`
-              : `/api/reports/cash-flow?period=${period}&skipCache=${skipCache}`;
+          ? `/api/reports/income-statement?period=${period}&skipCache=${skipCache}`
+          : reportType === 'balance-sheet'
+          ? `/api/reports/balance-sheet?period=${period}&skipCache=${skipCache}`
+          : `/api/reports/cash-flow?period=${period}&skipCache=${skipCache}`;
 
       const response = await fetch(endpoint, {
         headers: {
@@ -172,17 +173,12 @@ export default function ReportsPage() {
                 </label>
                 <Select
                   value={reportType}
-                  onValueChange={(val) => setReportType(val as ReportType)}
+                  onChange={(e) => setReportType(e.target.value as ReportType)}
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Report Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="trial-balance">Trial Balance</SelectItem>
-                    <SelectItem value="income-statement">Income Statement</SelectItem>
-                    <SelectItem value="balance-sheet">Balance Sheet</SelectItem>
-                    <SelectItem value="cash-flow">Cash Flow Statement</SelectItem>
-                  </SelectContent>
+                  <option value="trial-balance">Trial Balance</option>
+                  <option value="income-statement">Income Statement</option>
+                  <option value="balance-sheet">Balance Sheet</option>
+                  <option value="cash-flow">Cash Flow Statement</option>
                 </Select>
               </div>
 
@@ -192,18 +188,13 @@ export default function ReportsPage() {
                 </label>
                 <Select
                   value={period}
-                  onValueChange={setPeriod}
+                  onChange={(e) => setPeriod(e.target.value)}
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Period" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {generatePeriods().map((p) => (
-                      <SelectItem key={p} value={p}>
-                        {p}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+                  {generatePeriods().map((p) => (
+                    <option key={p} value={p}>
+                      {p}
+                    </option>
+                  ))}
                 </Select>
               </div>
 
@@ -228,7 +219,7 @@ export default function ReportsPage() {
           </div>
 
           <div className="flex gap-3">
-            <Button onClick={fetchReport} disabled={loading} className="flex-1">
+            <Button onClick={fetchReport} isLoading={loading} className="flex-1">
               Generate Report
             </Button>
             {reportData && (

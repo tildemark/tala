@@ -43,7 +43,7 @@ export function formatDate(date: string | Date): string {
  * Formats a date string into a readable format with time.
  *
  * @param date - The date string or Date object to format.
- * @returns A formatted date string with time (e.g., "Jan 15, 2026, 12:00 PM").
+ * @returns A formatted date-time string (e.g., "Jan 15, 2026, 10:30 AM").
  */
 export function formatDateTime(date: string | Date): string {
   const d = typeof date === 'string' ? new Date(date) : date;
@@ -52,7 +52,7 @@ export function formatDateTime(date: string | Date): string {
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
-    minute: 'numeric',
+    minute: '2-digit',
     hour12: true,
   }).format(d);
 }

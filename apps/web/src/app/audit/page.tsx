@@ -8,8 +8,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
 import { formatDateTime } from '@/lib/utils';
 
 type AuditEntityType = 'JournalEntry' | 'SalesInvoice' | 'Vendor';
@@ -143,10 +142,10 @@ export default function AuditTrailPage() {
           <p className="text-slate-600 mt-1">End-to-end hash chain with tampering detection.</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" onClick={fetchAuditLogs} disabled={loading}>
+          <Button variant="outline" onClick={fetchAuditLogs} isLoading={loading}>
             Refresh trail
           </Button>
-          <Button onClick={runTamperScan} disabled={scanLoading}>
+          <Button variant="primary" onClick={runTamperScan} isLoading={scanLoading}>
             Run tampering scan
           </Button>
         </div>
@@ -169,24 +168,12 @@ export default function AuditTrailPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <div className="space-y-2">
-                <Label>Entity type</Label>
-                <Select
-                  value={entityType}
-                  onValueChange={(val) => setEntityType(val as AuditEntityType)}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {entityOptions.map((opt) => (
-                      <SelectItem key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select
+                label="Entity type"
+                value={entityType}
+                onChange={(e) => setEntityType(e.target.value as AuditEntityType)}
+                options={entityOptions}
+              />
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-slate-700 mb-1">Entity ID</label>
                 <div className="flex gap-2">
@@ -196,7 +183,7 @@ export default function AuditTrailPage() {
                     placeholder="e.g. JE-2025-0001"
                     className="flex-1 h-10 rounded-md border border-slate-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
                   />
-                  <Button onClick={fetchAuditLogs} disabled={loading}>
+                  <Button onClick={fetchAuditLogs} isLoading={loading}>
                     Load
                   </Button>
                 </div>
@@ -397,7 +384,7 @@ export default function AuditTrailPage() {
                 </div>
               )}
 
-              <Button variant="secondary" onClick={runTamperScan} disabled={scanLoading} className="w-full">
+              <Button variant="secondary" onClick={runTamperScan} isLoading={scanLoading} className="w-full">
                 Re-run scan
               </Button>
             </CardContent>

@@ -11,7 +11,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 interface JournalEntry {
@@ -127,9 +126,9 @@ export default function JournalEntriesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     const { totalDebit, totalCredit, difference } = calculateTotals();
-
+    
     if (Math.abs(difference) > 0.01) {
       alert('Entry must balance! Debits and credits must be equal.');
       return;
@@ -284,32 +283,26 @@ export default function JournalEntriesPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Entry Details */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label>Entry Date</Label>
-                  <Input
-                    type="date"
-                    value={formData.entryDate}
-                    onChange={(e) => setFormData({ ...formData, entryDate: e.target.value })}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Reference Number</Label>
-                  <Input
-                    value={formData.referenceNo}
-                    onChange={(e) => setFormData({ ...formData, referenceNo: e.target.value })}
-                    placeholder="e.g., INV-001"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Input
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Brief description"
-                    required
-                  />
-                </div>
+                <Input
+                  type="date"
+                  label="Entry Date"
+                  value={formData.entryDate}
+                  onChange={(e) => setFormData({ ...formData, entryDate: e.target.value })}
+                  required
+                />
+                <Input
+                  label="Reference Number"
+                  value={formData.referenceNo}
+                  onChange={(e) => setFormData({ ...formData, referenceNo: e.target.value })}
+                  placeholder="e.g., INV-001"
+                />
+                <Input
+                  label="Description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Brief description"
+                  required
+                />
               </div>
 
               {/* Line Items */}

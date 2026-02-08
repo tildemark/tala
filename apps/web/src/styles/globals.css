@@ -22,7 +22,8 @@
   --chart-3: var(--color-yellow-500);
   --chart-4: var(--color-red-500);
   --chart-5: var(--color-purple-500);
-  --border: oklch(94% 0.004 286.32); /* between --color-zinc-100 and --color-zinc-200 */
+  --border: oklch(94% 0.004 286.32);
+  /* between --color-zinc-100 and --color-zinc-200 */
   --input: var(--color-zinc-200);
   --ring: var(--color-zinc-400);
   --radius: 0.5rem;
@@ -92,14 +93,17 @@
     from {
       transform: translateX(0);
     }
+
     to {
       transform: translateX(calc(-100% - var(--gap)));
     }
   }
+
   @keyframes marquee-vertical {
     from {
       transform: translateY(0);
     }
+
     to {
       transform: translateY(calc(-100% - var(--gap)));
     }
@@ -113,7 +117,7 @@
   }
 
   *:focus-visible {
-    @apply outline-ring rounded-xs shadow-none outline-2 outline-offset-3 transition-none!;
+    @apply outline-ring rounded-xs shadow-none outline-2 outline-offset-3 transition-none;
   }
 }
 
@@ -122,13 +126,16 @@
   ::-webkit-scrollbar {
     width: 5px;
   }
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
+
   ::-webkit-scrollbar-thumb {
     background: var(--input);
     border-radius: 5px;
   }
+
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--input) transparent;
@@ -144,7 +151,7 @@ html {
 @utility container {
   @apply mx-auto max-w-none px-4 lg:px-5;
 
-  @media (width >= --theme(--breakpoint-xl)) {
+  @media (width >=--theme(--breakpoint-xl)) {
     @apply max-w-(--breakpoint-xl);
   }
 }
@@ -153,4 +160,4 @@ html {
   @apply w-full mx-auto px-4 lg:px-5;
 }
 
-
+/* Metronic Configs */

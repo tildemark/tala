@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 interface InvoiceItem {
@@ -215,24 +214,20 @@ export default function SalesInvoicesPage() {
                     </option>
                   ))}
                 </select>
-                <div className="space-y-2">
-                  <Label>Invoice Date</Label>
-                  <Input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Due Date</Label>
-                  <Input
-                    type="date"
-                    value={formData.dueDate}
-                    onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                    required
-                  />
-                </div>
+                <Input
+                  label="Invoice Date"
+                  type="date"
+                  value={formData.date}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  required
+                />
+                <Input
+                  label="Due Date"
+                  type="date"
+                  value={formData.dueDate}
+                  onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+                  required
+                />
               </div>
 
               <div className="space-y-2">
@@ -303,14 +298,12 @@ export default function SalesInvoicesPage() {
                 </Button>
               </div>
 
-              <div className="space-y-2">
-                <Label>Notes</Label>
-                <Input
-                  value={formData.notes}
-                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Invoice notes or memo"
-                />
-              </div>
+              <Input
+                label="Notes"
+                value={formData.notes}
+                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                placeholder="Invoice notes or memo"
+              />
 
               <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                 <Button type="button" variant="outline" onClick={() => setShowForm(false)}>

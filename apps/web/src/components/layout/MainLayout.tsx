@@ -8,6 +8,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Menu, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
@@ -88,19 +90,19 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="px-4 text-slate-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                  className="text-slate-500"
                 >
+                  <Menu className="h-6 w-6" />
                   <span className="sr-only">Open sidebar</span>
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </button>
-                <h1 className="text-2xl font-bold text-indigo-600">TALA</h1>
+                </Button>
+                <h1 className="text-2xl font-bold text-indigo-600 ml-2">TALA</h1>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <span className="text-sm text-slate-600">Dev Tenant</span>
               <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold">
@@ -145,17 +147,12 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                         <span className="mr-3">{item.icon}</span>
                         {item.name}
                       </span>
-                      <svg
+                      <ChevronRight
                         className={cn(
                           'h-5 w-5 transition-transform',
                           expandedMenus.includes(item.name) && 'transform rotate-90'
                         )}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      />
                     </button>
                     {expandedMenus.includes(item.name) && (
                       <div className="ml-4 mt-1 space-y-1">

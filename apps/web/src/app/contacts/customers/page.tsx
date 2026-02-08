@@ -10,8 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
 import { formatDate } from '@/lib/utils';
 
 interface Customer {
@@ -68,7 +67,7 @@ export default function CustomersPage() {
     e.preventDefault();
     try {
       const method = editingId ? 'PUT' : 'POST';
-      const url = editingId
+      const url = editingId 
         ? `http://localhost:3001/api/customers/${editingId}`
         : 'http://localhost:3001/api/customers';
 
@@ -199,66 +198,50 @@ export default function CustomersPage() {
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Customer Name</Label>
-                  <Input
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g., ABC Corporation"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Customer Type</Label>
-                  <Select
-                    value={formData.customerType}
-                    onValueChange={(val) => setFormData({ ...formData, customerType: val })}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="individual">Individual</SelectItem>
-                      <SelectItem value="corporate">Corporate</SelectItem>
-                      <SelectItem value="ngo">NGO</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input
-                    type="email"
-                    value={formData.contactEmail}
-                    onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
-                    placeholder="contact@company.com"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Phone</Label>
-                  <Input
-                    value={formData.contactPhone}
-                    onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
-                    placeholder="+63-2-1234-5678"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>City</Label>
-                  <Input
-                    value={formData.city}
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    placeholder="Manila"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Credit Limit</Label>
-                  <Input
-                    type="number"
-                    value={formData.creditLimit}
-                    onChange={(e) => setFormData({ ...formData, creditLimit: parseFloat(e.target.value) })}
-                    placeholder="0"
-                  />
-                </div>
+                <Input
+                  label="Customer Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g., ABC Corporation"
+                  required
+                />
+                <Select
+                  label="Customer Type"
+                  value={formData.customerType}
+                  onChange={(e) => setFormData({ ...formData, customerType: e.target.value })}
+                  options={[
+                    { value: 'individual', label: 'Individual' },
+                    { value: 'corporate', label: 'Corporate' },
+                    { value: 'ngo', label: 'NGO' },
+                  ]}
+                  required
+                />
+                <Input
+                  label="Email"
+                  type="email"
+                  value={formData.contactEmail}
+                  onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
+                  placeholder="contact@company.com"
+                />
+                <Input
+                  label="Phone"
+                  value={formData.contactPhone}
+                  onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
+                  placeholder="+63-2-1234-5678"
+                />
+                <Input
+                  label="City"
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                  placeholder="Manila"
+                />
+                <Input
+                  label="Credit Limit"
+                  type="number"
+                  value={formData.creditLimit}
+                  onChange={(e) => setFormData({ ...formData, creditLimit: parseFloat(e.target.value) })}
+                  placeholder="0"
+                />
               </div>
               <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                 <Button type="button" variant="outline" onClick={() => handleCancel()}>
@@ -283,19 +266,16 @@ export default function CustomersPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Select
+              label="Filter by Type"
               value={filterType}
-              onValueChange={setFilterType}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all_types">All Types</SelectItem>
-                <SelectItem value="individual">Individual</SelectItem>
-                <SelectItem value="corporate">Corporate</SelectItem>
-                <SelectItem value="ngo">NGO</SelectItem>
-              </SelectContent>
-            </Select>
+              onChange={(e) => setFilterType(e.target.value)}
+              options={[
+                { value: '', label: 'All Types' },
+                { value: 'individual', label: 'Individual' },
+                { value: 'corporate', label: 'Corporate' },
+                { value: 'ngo', label: 'NGO' },
+              ]}
+            />
           </div>
         </CardContent>
       </Card>

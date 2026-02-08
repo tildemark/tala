@@ -10,8 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
 import { formatDate } from '@/lib/utils';
 
 interface Vendor {
@@ -66,7 +65,7 @@ export default function VendorsPage() {
     e.preventDefault();
     try {
       const method = editingId ? 'PUT' : 'POST';
-      const url = editingId
+      const url = editingId 
         ? `http://localhost:3001/api/vendors/${editingId}`
         : 'http://localhost:3001/api/vendors';
 
@@ -194,57 +193,43 @@ export default function VendorsPage() {
           <CardContent className="pt-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Vendor Name</Label>
-                  <Input
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g., Superior Supplies"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Vendor Type</Label>
-                  <Select
-                    value={formData.vendorType}
-                    onValueChange={(val) => setFormData({ ...formData, vendorType: val })}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="supplier">Supplier</SelectItem>
-                      <SelectItem value="contractor">Contractor</SelectItem>
-                      <SelectItem value="service_provider">Service Provider</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input
-                    type="email"
-                    value={formData.contactEmail}
-                    onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
-                    placeholder="contact@vendor.com"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Phone</Label>
-                  <Input
-                    value={formData.contactPhone}
-                    onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
-                    placeholder="+63-2-1234-5678"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>City</Label>
-                  <Input
-                    value={formData.city}
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    placeholder="Manila"
-                  />
-                </div>
+                <Input
+                  label="Vendor Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g., Superior Supplies"
+                  required
+                />
+                <Select
+                  label="Vendor Type"
+                  value={formData.vendorType}
+                  onChange={(e) => setFormData({ ...formData, vendorType: e.target.value })}
+                  options={[
+                    { value: 'supplier', label: 'Supplier' },
+                    { value: 'contractor', label: 'Contractor' },
+                    { value: 'service_provider', label: 'Service Provider' },
+                  ]}
+                  required
+                />
+                <Input
+                  label="Email"
+                  type="email"
+                  value={formData.contactEmail}
+                  onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
+                  placeholder="contact@vendor.com"
+                />
+                <Input
+                  label="Phone"
+                  value={formData.contactPhone}
+                  onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
+                  placeholder="+63-2-1234-5678"
+                />
+                <Input
+                  label="City"
+                  value={formData.city}
+                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                  placeholder="Manila"
+                />
               </div>
               <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                 <Button type="button" variant="outline" onClick={() => handleCancel()}>
@@ -269,19 +254,16 @@ export default function VendorsPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Select
+              label="Filter by Type"
               value={filterType}
-              onValueChange={setFilterType}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all_types">All Types</SelectItem>
-                <SelectItem value="supplier">Supplier</SelectItem>
-                <SelectItem value="contractor">Contractor</SelectItem>
-                <SelectItem value="service_provider">Service Provider</SelectItem>
-              </SelectContent>
-            </Select>
+              onChange={(e) => setFilterType(e.target.value)}
+              options={[
+                { value: '', label: 'All Types' },
+                { value: 'supplier', label: 'Supplier' },
+                { value: 'contractor', label: 'Contractor' },
+                { value: 'service_provider', label: 'Service Provider' },
+              ]}
+            />
           </div>
         </CardContent>
       </Card>
